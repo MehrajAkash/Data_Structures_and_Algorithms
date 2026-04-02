@@ -1,0 +1,64 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cout << "Enter number of processes: ";
+    cin >> n;
+
+    string name[n];
+    int at[n], bt[n], ct[n], tat[n], wt[n];
+
+    // Input
+    for(int i = 0; i < n; i++) {
+        cout << "\nProcess Name: ";
+        cin >> name[i];
+        cout << "Arrival Time: ";
+        cin >> at[i];
+        cout << "Burst Time: ";
+        cin >> bt[i];
+    }
+
+    // FCFS (no sorting, assume input is in order)
+    int time = 0;
+
+    for(int i = 0; i < n; i++) {
+        if(time < at[i])
+            time = at[i];
+
+        ct[i] = time + bt[i];
+        tat[i] = ct[i] - at[i];
+        wt[i] = tat[i] - bt[i];
+
+        time = ct[i];
+    }
+
+    // Output Table
+    cout << "\nName\tAT\tBT\tCT\tTAT\tWT\n";
+    for(int i = 0; i < n; i++) {
+        cout << name[i] << "\t" << at[i] << "\t" << bt[i]
+             << "\t" << ct[i] << "\t" << tat[i]
+             << "\t" << wt[i] << endl;
+    }
+
+    // Gantt Chart
+    cout << "\nGantt Chart:\n0 ";
+    for(int i = 0; i < n; i++) {
+        cout << "| " << name[i] << " ";
+    }
+    cout << "|\n0 ";
+
+    for(int i = 0; i < n; i++) {
+        cout << ct[i] << " ";
+    }
+
+    // Average Waiting Time
+    float avg = 0;
+    for(int i = 0; i < n; i++) {
+        avg += wt[i];
+    }
+
+    cout << "\n\nAverage Waiting Time = " << avg / n << endl;
+
+    return 0;
+}
